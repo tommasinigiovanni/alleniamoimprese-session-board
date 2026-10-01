@@ -1,0 +1,37 @@
+[Unit]
+Description=Portable Session Board
+After=network.target
+ConditionPathExists=/home/board/.config/session-board/password.hash
+
+[Service]
+Type=simple
+User=board
+Group=board
+WorkingDirectory=/opt/session-board
+Environment=HOME=/home/board
+Environment=BOARD_BIND=127.0.0.1:8099
+Environment=BOARD_USERNAME=admin
+Environment=BOARD_PASSWORD_HASH_FILE=/home/board/.config/session-board/password.hash
+Environment=BOARD_STATE_DIR=/home/board/.local/state/session-board
+Environment=BOARD_ALLOW_SEND=0
+Environment=BOARD_ACCOUNTS_ENABLED=1
+Environment=PATH=/home/board/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=BOARD_MCP_ENABLED=0
+Environment=BOARD_COOKIE_SECURE=0
+ExecStart=/opt/session-board/run.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=false
+ReadWritePaths=/home/board /tmp
+PrivateTmp=false
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=multi-user.target

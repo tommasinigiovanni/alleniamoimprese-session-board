@@ -1,0 +1,2 @@
+# Optional local dictation runtime, separate from the web application's venv.
+faster-whisper==1.2.1

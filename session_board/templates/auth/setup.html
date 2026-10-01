@@ -1,0 +1,29 @@
+{% extends 'auth/base.html' %}
+{% block title %}Attiva la verifica{% endblock %}
+{% block content %}
+{% if secret %}
+<h1>Collega la tua app.</h1>
+<p class="muted">Aggiungi un account nella tua app di autenticazione e inquadra questo QR.</p>
+<div class="qr-frame"><img src="/auth/setup/qr" width="240" height="240" alt="QR per collegare Session Board all'app di autenticazione"></div>
+<details class="manual-key"><summary>Preferisci inserire la chiave a mano?</summary><p>Account: Session Board<br>Tipo: basato sul tempo (TOTP)</p><code id="setup-secret">{{ secret }}</code></details>
+<form method="post" action="/auth/setup/confirm">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <label for="code">Codice a 6 cifre dell'app</label>
+  <input id="code" class="verification-code" name="code" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" maxlength="6" required autofocus>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <button class="primary" type="submit">Conferma e continua <span aria-hidden="true">→</span></button>
+</form>
+{% else %}
+<h1>Proteggi il tuo accesso.</h1>
+<p class="muted">La prima volta serve un codice di attivazione fornito dall'amministratore della board.</p>
+<p class="notice">Ti servirà solo per collegare la tua app di autenticazione.</p>
+<form method="post" action="/auth/setup">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <label for="bootstrap">Codice di attivazione</label>
+  <input id="bootstrap" name="bootstrap" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="256" required autofocus>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <button class="primary" type="submit">Collega la tua app <span aria-hidden="true">→</span></button>
+</form>
+{% endif %}
+{% include 'auth/cancel.html' %}
+{% endblock %}

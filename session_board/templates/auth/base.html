@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  {% set pwa_theme = '#f6f7f2' %}{% include 'auth/pwa-head.html' %}
+  <title>{% block title %}Accedi{% endblock %} | Session Board</title>
+  <link rel="stylesheet" href="{{ url_for('board_auth.static', filename='auth.css') }}">
+</head>
+<body>
+  <main class="login-card">
+    <div class="brand-mark" aria-hidden="true">S<span>B</span></div>
+    <p class="eyebrow">IL TUO SPAZIO DI LAVORO</p>
+    {% block content %}{% endblock %}
+    <p class="footnote">Accesso personale · Protetto con verifica in due passaggi</p>
+  </main>
+</body>
+</html>

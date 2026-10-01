@@ -1,0 +1,16 @@
+{% extends 'auth/base.html' %}
+{% block content %}
+<h1>Session Board</h1>
+<p class="muted">Le tue sessioni, un solo punto di controllo.</p>
+<ol class="steps" aria-label="Passaggi di accesso"><li class="current" aria-current="step">1 · Credenziali</li><li>2 · Verifica</li></ol>
+<form method="post" action="/login">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <label for="username">Nome utente</label>
+  <input id="username" name="username" autocomplete="username" maxlength="256" required autofocus>
+  <label for="password">Password</label>
+  <input id="password" type="password" name="password" autocomplete="current-password" maxlength="4096" required>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <button class="primary" type="submit">Continua <span aria-hidden="true">→</span></button>
+</form>
+<p class="hint">Al prossimo passaggio userai la tua app di autenticazione.</p>
+{% endblock %}

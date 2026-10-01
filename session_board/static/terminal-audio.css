@@ -1,0 +1,22 @@
+.terminal-audio-controls{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;max-width:100%;min-width:0}
+.terminal-audio-controls.is-unavailable{flex:1 1 220px}
+.terminal-audio-unavailable{margin:0;min-width:0;max-width:100%;flex:1 1 160px;font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+.terminal-audio-controls button{min-width:44px;min-height:44px;flex-shrink:0}
+.terminal-audio-record{font-size:19px;padding:4px 8px;line-height:1}
+.terminal-audio-record[aria-pressed=true]{color:#b52121;border-color:currentColor;background:#d650501a}
+.terminal-audio-cancel{font-size:12px;padding:4px 8px}
+.terminal-audio-timer{font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.terminal-audio-controls [hidden],.terminal-audio-recovery[hidden],.terminal-audio-recovery [hidden]{display:none!important}
+.terminal-audio-recovery{width:100%;min-width:0;box-sizing:border-box;display:flex;flex:1 0 100%;grid-column:1/-1;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid #8292a780;border-radius:8px}
+.terminal-audio-recovery p{margin:0;width:100%;font-size:12px}
+.terminal-audio-recovery textarea{box-sizing:border-box;width:100%;min-width:0;height:80px;max-height:120px;resize:vertical}
+.terminal-audio-recovery button{min-height:44px;font-size:12px}
+.terminal-audio-archive{grid-column:1/-1;flex:1 0 100%;width:100%;min-width:0;font-size:12px}
+.terminal-audio-archive[hidden]{display:none!important}
+.terminal-audio-archive summary{min-height:44px;align-content:center;cursor:pointer}
+.terminal-audio-archive>div>div{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0}
+.terminal-audio-archive span{flex:1 0 100%;overflow-wrap:anywhere}
+.terminal-audio-archive button{min-height:44px;font-size:12px}
+.chat-shortcuts-hint{flex:1 0 100%;grid-column:1/-1;margin:0;line-height:1.4;font-size:11px;opacity:.8;overflow-wrap:anywhere}
+.chat-shortcuts-hint[hidden]{display:none!important}
+@media(max-width:540px){.terminal-audio-controls{gap:4px}.terminal-audio-timer{font-size:11px}.terminal-audio-cancel{min-width:0;padding:4px 6px}}

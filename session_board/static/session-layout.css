@@ -1,0 +1,63 @@
+.session-layout{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:9px;flex-shrink:0}
+.session-layout button{font:inherit;font-size:12px;color:inherit;background:transparent;border:0;border-radius:6px;padding:8px 12px;min-height:36px;cursor:pointer}
+.session-layout button[aria-pressed="true"]{background:var(--card,#e9ede3);box-shadow:inset 0 0 0 1px var(--line);font-weight:600}
+.toolbar:has(.session-layout){flex-wrap:wrap;gap:12px}
+#board .session-list-placeholder{display:none}
+#board.session-list .session-list-placeholder{display:inline-block;color:var(--mut);font:500 10px var(--mono)}
+#board.session-list{display:flex;flex-direction:column;gap:12px}
+#board.session-list .col{flex:none;width:100%;min-width:0;min-height:0;padding:8px}
+#board.session-list .col.rail{display:none}
+#board.session-list .col h2{margin:0;padding:5px 6px 10px}
+#board.session-list .colbody{display:flex;flex-direction:column;gap:5px}
+#board.session-list .card{display:grid;grid-template-columns:minmax(150px,1fr) minmax(180px,1.4fr) auto;grid-template-areas:"name project actions" "name account actions" "name age actions";gap:3px 16px;margin:0;padding:10px 12px;min-width:0;border-radius:9px}
+#board.session-list .card .h{grid-area:name;align-self:center;margin:0;gap:5px;font-size:13px;min-width:0}
+#board.session-list .stbadge,#board.session-list .renamex,#board.session-list .killx,#board.session-list .session-move-up,#board.session-list .session-move-down{display:none}
+#board.session-list .card .det{display:contents}
+#board.session-list .card .det>:not(.p):not(.a):not(.session-account-badge):not(.card-actions){display:none}
+#board.session-list .card .p{grid-area:project;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#board.session-list .card .a{grid-area:age;margin:0}
+#board.session-list .card .session-account-badge{grid-area:account;justify-self:start;margin:0;max-width:100%;overflow-wrap:anywhere}
+#board.session-list .card-actions{grid-area:actions;align-self:center;gap:4px;margin:0;padding:0;border:0}
+#board.session-list .card-actions>:not([data-session-detail]):not([data-session-chat]):not([data-session-terminal]):not([data-session-full-terminal]){display:none}
+#board.session-list .card-actions button,#board.session-list .card-actions a{display:inline-flex;align-items:center;min-height:36px;padding:6px 8px}
+#board.session-list .card-actions :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#board.session-list .card-actions .primary{margin-left:0}
+#sessions.session-list{display:flex;flex-direction:column;gap:7px;min-height:0}
+#sessions.session-list .card{display:grid;grid-template-columns:minmax(120px,.8fr) minmax(100px,.6fr) minmax(140px,1fr) auto;grid-template-areas:"name status path actions" "summary summary summary actions";gap:8px 12px;align-items:center;padding:12px 15px;border-radius:9px;min-width:0}
+#sessions.session-list .card-top{grid-area:status;justify-content:flex-start;gap:6px}
+#sessions.session-list h3{grid-area:name;font-size:15px}
+#sessions.session-list .path{grid-area:path;min-width:0}
+#sessions.session-list .detail{display:none}
+.session-summary,.session-full-terminal{display:none}
+#sessions.session-list .session-summary{grid-area:summary;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--muted);min-width:0}
+#sessions.session-list .session-summary span{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#sessions.session-list .session-full-terminal{display:inline-flex;align-items:center;border-radius:8px}
+#sessions.session-list .card-foot{grid-area:actions;border:0;margin:0;padding:0;gap:12px;flex-wrap:wrap}
+@media(max-width:980px){
+  #board.session-list .card{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name name" "project project" "account age" "actions actions";gap:5px 8px}
+  #sessions.session-list .card{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name status" "path path" "summary summary" "actions actions";gap:6px}
+  #sessions.session-list .card-foot{justify-content:flex-end}
+  #sessions.session-list .card-foot>span{margin-right:auto}
+  #sessions.session-list .card-foot>span:first-child{width:100%}
+  #sessions.session-list .open-session{min-height:36px}
+}
+#drawer.fullscreen{position:fixed;inset:0;margin:0;width:100vw;max-width:none;height:var(--drawer-height,100dvh);max-height:none;border-radius:0;display:flex;flex-direction:column;gap:8px;padding:20px;overflow:auto}
+#drawer.fullscreen .drawer-heading{margin-bottom:0}
+#drawer.fullscreen #output{flex:1 0 180px;min-height:180px;height:auto;margin:0}
+#drawer.fullscreen .output-heading{margin-top:0}
+#drawer.fullscreen .footnote{margin:0}
+#drawer.fullscreen:not([open]){display:none}
+@media(max-width:650px){.toolbar .session-layout{margin-bottom:12px}.toolbar .filters{margin-bottom:12px}}
+body.tl-panel-open #board.session-list .card{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name name" "project project" "account age" "actions actions";gap:5px 8px}
+/* Reading also overrides the separate full-window terminal entry point. */
+#drawer .output-heading{display:flex;align-items:center;gap:8px}
+#drawer .output-heading>span:first-child{display:none}
+#drawer #terminal-expand{margin-left:auto;min-height:44px;padding:7px 12px;font-size:13px}
+#drawer #terminal-collapse{min-height:44px;flex:none;padding:7px 9px;font-size:12px}
+#drawer.terminal-expanded{position:fixed;inset:var(--drawer-top,0px) 0 auto 0;margin:0;width:100%;max-width:none;height:var(--drawer-height,100dvh);max-height:none;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));gap:6px;border:0;border-radius:0;overflow:hidden}
+#drawer.terminal-expanded>:not(.drawer-heading):not(#output){display:none!important}
+#drawer.terminal-expanded .drawer-heading{min-height:44px;flex:none;flex-wrap:nowrap;gap:8px}
+#drawer.terminal-expanded .drawer-heading>div{min-width:0;flex:1}
+#drawer.terminal-expanded .drawer-heading .eyebrow{display:none}
+#drawer.terminal-expanded .drawer-heading h2{margin:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#drawer.terminal-expanded #output{flex:1 1 0;min-height:0;height:auto;margin:0;overflow:auto;overscroll-behavior:contain;overflow-anchor:none}

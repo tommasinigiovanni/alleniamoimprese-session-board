@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="csrf" content="{{ csrf }}">
+  <title>File | Session Board</title>
+  {% set pwa_theme = '#f6f7f2' %}{% include 'auth/pwa-head.html' %}
+  <script src="/static/theme.js"></script>
+  <link rel="stylesheet" href="/static/board.css">
+  <link rel="stylesheet" href="/static/files.css">
+  <link rel="stylesheet" href="/static/theme-dark.css">
+  <script defer src="/static/files.js"></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/"><span class="brand-mark small">S<span>B</span></span> Session Board <span class="edition">PORTABLE</span></a>
+    <div class="header-right">
+      <a class="files-link" href="/">← Sessioni</a>
+      <button id="theme-toggle" class="quiet theme-toggle" type="button" aria-pressed="false">☾</button>
+    </div>
+  </header>
+  <main class="workspace files-page" data-allow-write="{{ '1' if allow_write else '0' }}">
+    <div class="section-title">
+      <div>
+        <p class="eyebrow">FILE SYSTEM</p>
+        <h2>File della macchina</h2>
+      </div>
+      <span class="mode">{% if allow_write %}Caricamento abilitato{% else %}Solo lettura{% endif %}</span>
+    </div>
+
+    <nav id="crumbs" class="crumbs" aria-label="Percorso"></nav>
+
+    <div class="files-toolbar">
+      <div class="files-actions">
+        <button id="files-up" type="button">↑ Su</button>
+        <button id="files-refresh" type="button">↻ Aggiorna</button>
+        {% if allow_write %}
+        <button id="files-mkdir" type="button">+ Nuova cartella</button>
+        <label class="primary files-upload-button">Carica file ↥<input id="files-input" type="file" multiple></label>
+        {% endif %}
+      </div>
+      <label class="files-hidden-toggle"><input id="files-hidden" type="checkbox"> Mostra file nascosti</label>
+    </div>
+
+    <p id="files-error" class="error" role="alert" hidden></p>
+    <section id="files-uploads" class="files-uploads" aria-label="Caricamenti" hidden></section>
+
+    <section id="files-drop" class="files-drop" aria-label="Contenuto della cartella">
+      {% if allow_write %}<p class="files-drop-hint">Trascina qui i file dal tuo computer per caricarli in questa cartella.</p>{% endif %}
+      <table class="files-table">
+        <thead><tr><th scope="col">Nome</th><th scope="col" class="num">Dimensione</th><th scope="col" class="num">Modificato</th></tr></thead>
+        <tbody id="files-list"><tr><td colspan="3" class="muted">Caricamento…</td></tr></tbody>
+      </table>
+    </section>
+    <p id="files-status" class="footnote" role="status"></p>
+  </main>
+</body>
+</html>

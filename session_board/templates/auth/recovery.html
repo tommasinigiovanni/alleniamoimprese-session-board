@@ -1,0 +1,20 @@
+{% extends 'auth/base.html' %}
+{% block title %}Salva i codici di recupero{% endblock %}
+{% block content %}
+<p class="status">Verifica in due passaggi attivata ✓</p>
+<h1>Conserva una via d'accesso.</h1>
+{% if codes %}
+<p class="muted">Se perdi l'app, questi codici ti permettono di entrare. Salvali nel tuo gestore di password o in un luogo sicuro.</p>
+<ul class="recovery-codes" aria-label="Codici di recupero monouso">{% for code in codes %}<li><code class="recovery-code">{{ code }}</code></li>{% endfor %}</ul>
+<p class="notice">Li mostriamo solo ora. Ogni codice si può usare una volta sola.</p>
+{% else %}
+<p class="notice">I codici sono già stati mostrati e non si possono visualizzare di nuovo. Per gli accessi successivi puoi usare la tua app di autenticazione.</p>
+{% endif %}
+<form method="post" action="/auth/recovery/ack">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <label class="checkbox-label"><input type="checkbox" name="saved" value="yes" required> Ho salvato i miei codici di recupero.</label>
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <button class="primary" type="submit">Entra nella board <span aria-hidden="true">↗</span></button>
+</form>
+{% include 'auth/cancel.html' %}
+{% endblock %}

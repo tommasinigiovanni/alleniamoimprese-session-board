@@ -1,0 +1,104 @@
+/* Portable shell around the shared conversation renderer. */
+.card-foot{flex-wrap:wrap;gap:8px}.card-foot>span{flex-basis:100%}.card-foot .open-session{min-height:44px}.card-foot .primary{background:var(--green);color:white}
+body.session-open{overflow:hidden}
+#drawer{width:min(820px,calc(100% - 32px));height:calc(100dvh - 32px);max-height:none;padding:18px;overflow:hidden}
+#drawer[open]{display:flex;flex-direction:column;gap:8px}
+#drawer .drawer-heading{flex:none;margin:0;gap:12px}#drawer .drawer-heading .eyebrow{margin:0;font-size:9px}
+#drawer .drawer-heading h2{font-size:18px}#drawer #close-drawer{min-width:44px;min-height:44px}
+#session-view-tabs{display:flex;flex:none;gap:4px;background:#e9ede3;padding:3px;border-radius:9px}
+#session-view-tabs button{flex:1;min-height:44px;border:0;background:transparent}
+#session-view-tabs button[aria-selected=true]{background:white;box-shadow:0 1px 3px #0001;color:var(--green);font-weight:600}
+#drawer .pane-choice{flex:none}#drawer .pane-choice select{flex:1;min-height:40px}
+#drawer .session-account{flex:none;max-height:35%;overflow:auto;margin:0}
+#drawer .output-heading{flex:none;margin:0}
+#drawer #output{flex:1;min-height:60px;height:auto;margin:0}
+#drawer #send-form{flex:none;display:grid;grid-template-columns:1fr auto;gap:5px;align-items:end}
+#drawer #send-form>label{grid-column:1/-1;font-size:0;margin:0}
+#drawer textarea{display:block;width:100%;height:60px;min-height:54px;max-height:120px;resize:vertical;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:16px/1.4 system-ui}
+#drawer #send-form>button{margin:0;width:auto;min-height:44px;min-width:80px;justify-content:center}
+#drawer .terminal-image-actions>span,#drawer .terminal-image-actions>small{display:none}
+#drawer .terminal-image-actions button{min-height:44px;padding:8px;font-size:12px}
+#drawer .terminal-image-preview{max-height:90px;overflow:auto;margin:0;padding:4px}#drawer .terminal-image-preview img{height:48px;width:56px}
+#drawer #send-result{flex:none;min-height:18px;max-height:40px;overflow:auto;margin:0;font-size:12px;color:var(--green)}
+#drawer>.footnote{flex:none;margin:0;font-size:10px}
+#drawer.chat-mode>.footnote,#drawer.chat-mode.single-pane>.pane-choice{display:none}
+#chat-tools{display:flex;flex:none;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
+#chat-refresh{min-width:44px;min-height:44px;padding:4px;font-size:20px;background:transparent}
+#chat{flex:1;min-height:60px;overflow:auto;overscroll-behavior:contain;overflow-anchor:none;padding:8px 2px 12px;scrollbar-gutter:stable;outline-offset:-2px}
+#chat .tl-chat-message{margin:0 4px 18px 0;padding:12px 4px;color:var(--ink);font:16px/1.65 system-ui;overflow-wrap:anywhere}
+#chat .tl-chat-message.user{margin-left:18px;margin-right:0;padding:12px 16px;background:#eaf1dc;border:1px solid #d5e2c3;border-radius:14px}
+#chat .tl-chat-byline{display:flex;align-items:center;gap:12px;margin-bottom:9px;color:var(--green);font-size:12px;font-weight:600}
+#chat .tl-chat-byline time{color:var(--muted);font-size:11px;font-weight:400}
+#chat .tl-chat-body p{white-space:pre-wrap;margin:0 0 10px}
+#chat .tl-chat-body h3{font-size:17px;line-height:1.4;margin:8px 0}
+#chat .tl-chat-body ul,#chat .tl-chat-body ol{padding-left:22px;margin:8px 0}
+#chat .tl-chat-body a{color:#185cad;text-decoration:underline}
+#chat .tl-chat-body code{font:13px/1.6 ui-monospace,monospace;background:#edf0e8;padding:2px 4px;border-radius:4px}
+#chat .tl-chat-code{margin:12px 0;background:#edf0e8;border-radius:8px;overflow:hidden}
+#chat .tl-chat-body pre{clear:both;display:block;min-height:0;height:auto;max-height:320px;margin:0;white-space:pre;overflow:auto;overflow-wrap:normal;flex:none;padding:12px;background:#edf0e8;color:var(--ink)}
+#chat .tl-chat-body pre code{padding:0;background:none}
+#chat .tl-chat-table-wrap{max-width:100%;overflow:auto;margin:12px 0;border:1px solid var(--line);border-radius:8px}
+#chat .tl-chat-table-wrap:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+#chat .tl-chat-table{width:100%;border-collapse:collapse;font:inherit;font-size:14px}
+#chat .tl-chat-table th,#chat .tl-chat-table td{min-width:6rem;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;white-space:normal;overflow-wrap:normal}
+#chat .tl-chat-table th:first-child,#chat .tl-chat-table td:first-child{min-width:3rem}
+#chat .tl-chat-table th{background:#edf0e8;color:var(--ink);font-weight:600}
+#chat .tl-chat-table tbody tr:last-child td{border-bottom:0}
+#chat button.tl-chat-copy{min-height:44px;min-width:44px;padding:4px 8px;background:transparent;border:0;color:var(--muted);font-size:11px}
+#chat .tl-chat-byline>button.tl-chat-copy{margin-left:auto}#chat .tl-chat-code>button{float:right}
+#chat .tl-chat-body>:last-child{margin-bottom:0}
+#chat .tl-chat-empty{padding:24px 12px;color:var(--muted);font-size:15px}
+#chat .tl-chat-actions{margin:0 4px 18px 0;border:1px solid var(--line);border-radius:10px;background:#f2f5ec;color:var(--muted);font:13px/1.5 system-ui;overflow-wrap:anywhere}
+#chat .tl-chat-actions-summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 12px;cursor:pointer;list-style:none;color:var(--green);font-weight:600;border-radius:9px}
+#chat .tl-chat-actions-summary::-webkit-details-marker{display:none}
+#chat .tl-chat-actions-summary::before{content:'›';font-size:20px;line-height:1;transition:transform .15s}
+#chat .tl-chat-actions[open]>.tl-chat-actions-summary::before{transform:rotate(90deg)}
+#chat .tl-chat-actions-summary:focus-visible{outline:2px solid var(--green);outline-offset:-3px}
+#chat .tl-chat-action-list{list-style:none;padding:0 12px 10px;margin:0}
+#chat .tl-chat-action{padding:10px 0;border-top:1px solid var(--line)}
+#chat .tl-chat-action-heading{display:flex;align-items:baseline;gap:8px}#chat .tl-chat-action-label{flex:1;min-width:0}
+#chat .tl-chat-action-state{flex:none;font-size:10px;color:var(--muted)}
+#chat .tl-chat-action[data-status=error] .tl-chat-action-state{color:#a83232}
+#chat .tl-chat-action-tool{margin:5px 0 0 28px;font-size:11px;color:var(--muted)}
+#chat .tl-chat-action-tool code{font:11px/1.5 ui-monospace,monospace;color:var(--ink)}
+#chat .tl-chat-action-detail{margin:8px 0 0 28px;border-radius:6px;background:#e8eee0;color:var(--ink);overflow:hidden}
+#chat .tl-chat-action-detail>button{float:right}
+#chat .tl-chat-action-detail>summary{min-height:44px;padding:10px;cursor:pointer;font-size:12px}
+#chat .tl-chat-action-detail>summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+#chat .tl-chat-action-detail pre{clear:both;display:block;height:auto;min-height:0;max-height:180px;margin:0;padding:8px 10px;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;font:12px/1.6 ui-monospace,monospace;background:transparent;color:var(--ink)}
+#chat .tl-chat-action-detail code{font:inherit;background:none}
+#chat .tl-chat-action-truncated{display:block;padding:3px 10px 8px;font-size:10px;color:var(--muted)}
+#chat .tl-chat-delivery{margin-top:8px;font:12px/1.4 system-ui;color:#4e6136}
+#chat .local[data-delivery=uncertain] .tl-chat-delivery,#chat .local[data-delivery=failed] .tl-chat-delivery{color:#8d401d}
+#drawer #chat-question{flex:0 1 auto;min-height:0;max-height:280px;overflow:auto;padding:10px 12px;border:1px solid #b4a168;border-radius:9px;background:#fff9e6}
+#drawer #chat-question[data-kind=choice]{max-height:none}
+#drawer .sq-title{font:600 14px/1.4 system-ui;margin:0;color:var(--ink)}
+#drawer .sq-context-label{font:600 11px/1.4 system-ui;margin:6px 0 0;color:#66582d}
+#drawer .sq-context{height:auto;min-height:0;max-height:64px;margin:6px 0;padding:6px 8px;font-size:12px;background:#f3ebd1;color:var(--ink)}
+#drawer #chat-question[data-kind=choice] .sq-context{max-height:180px;overflow:auto;white-space:pre-wrap}
+#drawer .sq-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+#drawer .sq-choice{flex:1;min-height:44px;font-size:13px;padding:6px 10px}
+#drawer .sq-choices[data-kind=choice]{flex-direction:column;flex-wrap:nowrap}
+#drawer .sq-choice[data-kind=choice]{display:grid;grid-template-columns:1.5em minmax(0,1fr);column-gap:6px;row-gap:3px;flex:none;width:100%;text-align:left;white-space:normal;overflow-wrap:anywhere}
+#drawer .sq-choice-number{grid-column:1;grid-row:1 / span 3;font-weight:600}
+#drawer .sq-choice-label{grid-column:2;font-weight:600;line-height:1.4}
+#drawer .sq-choice-description{grid-column:2;font-size:12px;line-height:1.4;white-space:pre-wrap}
+#drawer .sq-choice-current{grid-column:2;font-size:10px;line-height:1.4;font-weight:600}
+#drawer .sq-choice[aria-current=true]{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+#drawer .sq-choice-description[hidden],#drawer .sq-choice-current[hidden]{display:none}
+#drawer .sq-status{font-size:11px;margin-top:5px;color:#66582d}
+#drawer .sq-refresh{min-height:36px;margin-top:4px;padding:4px 8px;background:transparent;font-size:11px}
+#drawer.chat-mode.keyboard-open.has-question #send-form,#drawer.chat-mode.keyboard-open.has-question #send-result{display:none}
+#chat-latest{align-self:center;min-height:44px;flex:none;font-size:12px}
+@media(max-width:999px){
+ #drawer{position:fixed;inset:var(--drawer-top,0px) 0 auto 0;margin:0;width:100%;max-width:none;height:var(--drawer-height,100dvh);border:0;border-radius:0;padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));gap:5px}
+ #drawer.keyboard-open .pane-choice,#drawer.keyboard-open .eyebrow,#drawer.keyboard-open>.footnote{display:none}
+ #drawer.keyboard-open textarea{height:54px}
+ #drawer.keyboard-open #chat-tools{font-size:10px}
+ #drawer.keyboard-open #chat-refresh{min-height:32px;font-size:16px}
+ #drawer.keyboard-open .terminal-image-tools{display:flex;align-items:center;gap:4px}
+ #drawer.keyboard-open .terminal-image-preview{flex:1;min-width:0;flex-wrap:nowrap;gap:3px;max-height:44px;padding:0;border:0}
+ #drawer.keyboard-open .terminal-image-preview img{width:30px;height:30px}
+ #drawer.keyboard-open .terminal-image-preview figcaption{display:none}
+ #drawer.keyboard-open .terminal-image-preview button{min-height:44px;padding:3px;font-size:10px}
+}

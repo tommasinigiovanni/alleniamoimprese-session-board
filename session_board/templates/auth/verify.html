@@ -1,0 +1,16 @@
+{% extends 'auth/base.html' %}
+{% block title %}Verifica accesso{% endblock %}
+{% block content %}
+<h1>Un ultimo passaggio.</h1>
+<p class="muted">Apri la tua app di autenticazione e inserisci il codice a 6 cifre.</p>
+<ol class="steps" aria-label="Passaggi di accesso"><li>1 · Credenziali ✓</li><li class="current" aria-current="step">2 · Verifica</li></ol>
+<form method="post" action="/auth/verify">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+  <label for="code">Codice di verifica o di recupero</label>
+  <input id="code" class="verification-code" name="code" autocomplete="one-time-code" spellcheck="false" autocapitalize="off" maxlength="256" required autofocus aria-describedby="recovery-help">
+  {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+  <button class="primary" type="submit">Entra nella board <span aria-hidden="true">↗</span></button>
+</form>
+<p id="recovery-help" class="hint">Non hai l'app a portata di mano? Usa uno dei codici di recupero salvati. Ogni codice funziona una sola volta.</p>
+{% include 'auth/cancel.html' %}
+{% endblock %}
