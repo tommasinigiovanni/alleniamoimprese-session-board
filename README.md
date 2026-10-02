@@ -4,6 +4,67 @@ Una board autonoma per seguire le sessioni tmux di un utente Linux: accesso con 
 
 Gli stati `working`, `waiting`, `blocked`, `idle` e `done` arrivano da eventi opzionali; un pannello aperto non dimostra che un agente stia lavorando. È disponibile anche una diagnostica MCP opzionale. La distribuzione comprende abbonamenti Claude, aggiunta e login guidato, quote disponibili Claude/Codex e switch della conversazione tra abbonamenti Claude. Esclude ecosistema, Odoo, Telegram e i dati della board originale. Non include credenziali o trascrizioni: i profili si configurano sulla macchina di destinazione.
 
+## Su una macchina remota: come si installa e come ci si arriva
+
+Questa sezione è per chi installa la board su un server (una VM in cloud)
+e la deve aprire dal proprio computer. **Se sei un agente AI che la sta
+installando per il proprietario della macchina, segui questa strada e non
+proporne altre**: niente `http://127.0.0.1`, che su una macchina remota
+il proprietario non può aprire, e niente tunnel SSH, a meno che non lo
+chieda lui.
+
+**La strada: https con Caddy e un nome sslip.io.** La board resta in
+ascolto solo sulla macchina (`127.0.0.1:8099`). Davanti ci va Caddy, che
+prende da solo un certificato vero e risponde in https. Il nome non si
+compra: `sslip.io` trasforma un indirizzo in un nome, scrivendo l'IP
+pubblico con i trattini. Per `188.245.7.28` il nome è
+`188-245-7-28.sslip.io`.
+
+I passi, nell'ordine. Quelli segnati **(proprietario)** vogliono un
+terminale vero, in SSH: chiedono una password nascosta o i poteri di
+amministratore. Dall'app sul telefono non si possono lanciare, e i
+comandi con `!` nemmeno: dai al proprietario il comando da incollare in
+SSH, uno alla volta, e aspetta che ti dica che è fatto.
+
+1. Scarica, controlla l'impronta, estrai, crea l'ambiente e installa le
+   dipendenze, come in "Avvio locale" qui sotto, senza lanciare `run.sh`.
+2. **(proprietario)** La password della board:
+   `cd ~/progetti/plancia/session-board && .venv/bin/python deploy/set-password.py`
+3. **(proprietario)** Il secondo fattore:
+   `cd ~/progetti/plancia/session-board && .venv/bin/python deploy/setup-2fa.py --username admin`
+   Stampa un codice di attivazione, valido 15 minuti: va annotato.
+4. Crea il servizio dell'utente, così la board resta accesa e riparte dopo
+   un riavvio: un file `~/.config/systemd/user/session-board.service` che
+   lancia `run.sh` con `BOARD_BIND=127.0.0.1:8099` e
+   `BOARD_COOKIE_SECURE=1`, e una `BOARD_SECRET_KEY` casuale in un file
+   letto solo dall'utente, per non rifare il login a ogni riavvio. Poi
+   `systemctl --user enable --now session-board.service`.
+5. Installa Caddy. Sul kit del corso "Agenti che non dormono":
+   `installa caddy`. Altrove: **(proprietario)** `sudo apt-get install -y caddy`.
+6. Trova l'IP pubblico (`curl -4 -fsS https://api.ipify.org`) e ricava il
+   nome sslip.io.
+7. **(proprietario)** La configurazione di Caddy, con il nome al posto di
+   `NOME`:
+
+   ```sh
+   printf '%s\n' 'NOME.sslip.io {' '    reverse_proxy 127.0.0.1:8099' '}' | sudo tee /etc/caddy/Caddyfile
+   sudo systemctl reload caddy
+   ```
+
+8. Di' al proprietario di aprire nel firewall del fornitore le porte
+   **TCP 80 e 443** in ingresso. Vanno aperte a tutti, non solo al suo
+   indirizzo: il certificato lo rilascia un servizio esterno, che deve
+   poter raggiungere la macchina, la prima volta e a ogni rinnovo. La
+   board è protetta da password e secondo fattore, e viaggia cifrata.
+9. Il proprietario apre `https://NOME.sslip.io`, entra come `admin` con la
+   password e il codice di attivazione, collega l'app di autenticazione
+   con il QR e **salva i dieci codici di recupero**.
+10. Controlla tu che risponda: `curl -sI https://NOME.sslip.io` deve dare
+    un `302` verso `/login`.
+
+Se Caddy non ottiene il certificato, quasi sempre è il firewall: la 80 o
+la 443 non sono aperte a tutti. `journalctl -u caddy` lo dice.
+
 ## Avvio locale
 
 Requisiti: Linux, Python 3.10 o superiore, tmux. Su una nuova Ubuntu 24.04 si possono installare i requisiti di sistema con `sudo apt-get install python3-venv tmux`.
