@@ -21,10 +21,15 @@ pubblico con i trattini. Per `188.245.7.28` il nome è
 `188-245-7-28.sslip.io`.
 
 I passi, nell'ordine. Quelli segnati **(proprietario)** vogliono un
-terminale vero, in SSH: chiedono una password nascosta o i poteri di
-amministratore. Dall'app sul telefono non si possono lanciare, e i
-comandi con `!` nemmeno: dai al proprietario il comando da incollare in
-SSH, uno alla volta, e aspetta che ti dica che è fatto.
+terminale vero, in SSH, perché chiedono una password nascosta. Dall'app
+sul telefono non si possono lanciare, e i comandi con `!` nemmeno: dai al
+proprietario il comando da incollare in SSH, uno alla volta, e aspetta
+che ti dica che è fatto.
+
+I passi segnati **(amministratore)** vogliono `sudo`. Se sulla macchina
+puoi usarlo (sul kit del corso "Agenti che non dormono" sì, dalla v1.6),
+lanciali tu: prima di' che è un comando da amministratore, spiega cosa fa
+e aspetta il sì. Se non puoi, dalli al proprietario da incollare in SSH.
 
 1. Scarica, controlla l'impronta, estrai, crea l'ambiente e installa le
    dipendenze, come in "Avvio locale" qui sotto, senza lanciare `run.sh`.
@@ -40,11 +45,12 @@ SSH, uno alla volta, e aspetta che ti dica che è fatto.
    letto solo dall'utente, per non rifare il login a ogni riavvio. Poi
    `systemctl --user enable --now session-board.service`.
 5. Installa Caddy. Sul kit del corso "Agenti che non dormono":
-   `installa caddy`. Altrove: **(proprietario)** `sudo apt-get install -y caddy`.
+   `installa caddy`. Altrove: **(amministratore)** `sudo apt-get install -y caddy`.
 6. Trova l'IP pubblico (`curl -4 -fsS https://api.ipify.org`) e ricava il
    nome sslip.io.
-7. **(proprietario)** La configurazione di Caddy, con il nome al posto di
-   `NOME`:
+7. **(amministratore)** La configurazione di Caddy, con il nome al posto
+   di `NOME`. Prima guarda cosa c'è in `/etc/caddy/Caddyfile`: se c'è già
+   un altro sito non sovrascriverlo, aggiungi il blocco.
 
    ```sh
    printf '%s\n' 'NOME.sslip.io {' '    reverse_proxy 127.0.0.1:8099' '}' | sudo tee /etc/caddy/Caddyfile
