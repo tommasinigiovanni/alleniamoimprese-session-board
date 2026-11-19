@@ -1,7 +1,7 @@
 /* Portable shell around the shared conversation renderer. */
 .card-foot{flex-wrap:wrap;gap:8px}.card-foot>span{flex-basis:100%}.card-foot .open-session{min-height:44px}.card-foot .primary{background:var(--green);color:white}
 body.session-open{overflow:hidden}
-#drawer{width:min(820px,calc(100% - 32px));height:calc(100dvh - 32px);max-height:none;padding:18px;overflow:hidden}
+#drawer{width:min(1200px,calc(100% - 32px));max-width:none;height:calc(100dvh - 32px);max-height:none;padding:18px;overflow:hidden}
 #drawer[open]{display:flex;flex-direction:column;gap:8px}
 #drawer .drawer-heading{flex:none;margin:0;gap:12px}#drawer .drawer-heading .eyebrow{margin:0;font-size:9px}
 #drawer .drawer-heading h2{font-size:18px}#drawer #close-drawer{min-width:44px;min-height:44px}

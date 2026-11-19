@@ -64,6 +64,8 @@ function acceptTerminalOutput(text){
 document.addEventListener('selectionchange',()=>{if(pendingTerminalOutput!==null&&!selectedTerminalOutput()&&$('drawer').open&&sessionView==='terminal')acceptTerminalOutput(pendingTerminalOutput);});
 function age(ts) { const s = Math.max(0,Math.floor(Date.now()/1000-ts)); return s<60 ? 'ora' : s<3600 ? `${Math.floor(s/60)} min fa` : `${Math.floor(s/3600)} h fa`; }
 function state(row) { return row.stale ? 'unknown' : row.report?.status || 'unknown'; }
+// Senza uno stato segnalato dall'agente la scheda dice un fatto: quando Claude ha risposto l'ultima volta.
+function activityLabel(data){const when=Date.parse(data?.sampled_at);return Number.isFinite(when)?`Ultima risposta: ${age(when/1000)}`:'Nessuna risposta rilevata';}
 const sessionSummaries=new Map(), summaryPending=new Set(), summaryQueue=[];
 let summaryRunning=0;
 const terminalTarget=new URLSearchParams(location.search);
@@ -79,9 +81,10 @@ function paintSummary(box){
   if(data.sampled_at&&Number.isFinite(Date.parse(data.sampled_at)))tokens.title+=` · rilevati ${new Date(data.sampled_at).toLocaleString('it-IT')}`;
   const account=node('span','session-account-name',typeof data.account==='string'&&data.account?`👤 ${data.account}`:'Abbonamento n/d');
   account.title=account.textContent;box.replaceChildren(tokens,account);
+  const badge=box.closest('.card')?.querySelector('.badge[data-activity]');if(badge)badge.textContent=activityLabel(data);
 }
 function pumpSummaries(){
-  if(document.hidden||!$('sessions').classList.contains('session-list'))return;
+  if(document.hidden)return;
   while(summaryRunning<2&&summaryQueue.length){
     const job=summaryQueue.shift();
     if(!rows.some(row=>summaryKey(row)===job.key)){summaryPending.delete(job.key);continue;}
@@ -97,7 +100,6 @@ function pumpSummaries(){
   }
 }
 function refreshSummaries(){
-  if(!$('sessions').classList.contains('session-list'))return;
   const visible=new Set(Array.from(document.querySelectorAll('[data-summary-key]'),box=>box.dataset.summaryKey));
   for(const row of rows){
     const key=summaryKey(row),pane=activePane(row),cached=sessionSummaries.get(key);
@@ -131,7 +133,9 @@ function render() {
   }
   for (const row of visible) {
     const card=node('article','card'), top=node('div','card-top'), s=state(row);
-    top.append(node('span',`badge ${s}`,labels[s] || (row.stale ? 'Stato da aggiornare' : 'Stato non segnalato')));
+    const badge=node('span',`badge ${s}`,labels[s] || (row.stale ? 'Stato da aggiornare' : activityLabel(sessionSummaries.get(summaryKey(row))?.data)));
+    if(!labels[s]&&!row.stale)badge.dataset.activity='1';
+    top.append(badge);
     const pin=node('button',`pin ${pins.has(row.name)?'active':''}`,pins.has(row.name)?'★':'☆'); pin.setAttribute('aria-label',`Preferita: ${row.name}`);pin.setAttribute('aria-pressed',String(pins.has(row.name)));
     pin.onclick=()=>{pins.has(row.name)?pins.delete(row.name):pins.add(row.name);try{localStorage.setItem('session-board-pins',JSON.stringify([...pins]));}catch{}render();};top.append(pin);
     const current=activePane(row), path=node('div','path',current?.cwd||'');path.title=current?.cwd||'';
