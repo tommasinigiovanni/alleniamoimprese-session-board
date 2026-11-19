@@ -333,11 +333,8 @@ def _command_context(lines):
 def _command_detail(command):
     if not command:
         return _PREVIEW_FALLBACK
-    # Recover only this literal executable/operation/flag prefix. The shell
-    # payload stays omitted; no interpolation, token execution or evaluation.
-    if (re.match(r'^git[ \t]+commit[ \t]+-m[ \t]+', command)
-            and any(marker in command for marker in ('\n', '\r', '<<', '$(', '`'))):
-        return 'git commit -m [script omesso]'
+    # The owner approves what is shown: the command is displayed as written,
+    # with recognized credentials masked.
     return sanitize_detail(command)['detail'] or _PREVIEW_FALLBACK
 
 
